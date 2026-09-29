@@ -152,7 +152,7 @@ templates expect the code they shipped with.  See
 [Upgrading](https://chaunceygardiner.github.io/weewx-nws/upgrading.html) — why there is
 nothing to do about the database, and the hard-coded gridpoint URLs that are now doing harm.
 The full history is in
-[changes.txt](https://github.com/chaunceygardiner/weewx-nws/blob/master/changes.txt).
+[changes.md](https://github.com/chaunceygardiner/weewx-nws/blob/master/changes.md).
 
 ## Testing
 

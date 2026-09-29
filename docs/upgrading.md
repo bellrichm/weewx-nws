@@ -146,4 +146,4 @@ in the log rather than a mystery.
 `alert_retry_wait_secs`).
 
 The full history is in
-[changes.txt](https://github.com/chaunceygardiner/weewx-nws/blob/master/changes.txt).
+[changes.md](https://github.com/chaunceygardiner/weewx-nws/blob/master/changes.md).

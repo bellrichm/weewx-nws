@@ -1,7 +1,6 @@
-nws change history
-------------------
+# weewx-nws change history
 
-6.1.3 (pending)
+## 6.1.3 (pending)
 - In the dark theme, the lines between things and the outlines of the
   controls are as visible as they are in light.  The rules between the 7 Day
   rows and the Hourly rows, the underlines of both column heads and of the
@@ -24,7 +23,7 @@ nws change history
   edge met the labels and at 360px it covered their tops; it is now a
   little smaller there, and ends above them down to 320px.
 
-6.1.2 09/14/2026
+## 6.1.2 09/14/2026
 - The 7 Day page's temperature chart names its two halves with a pair of
   filled labels -- PAST 7 DAYS ACTUAL in the recorded curve's gray, FORECASTED
   TEMPERATURES in the forecast curve's red -- one each side of the dividing
@@ -88,7 +87,7 @@ nws change history
   means to send -- now shows both times instead of saying "no end time
   given".
 
-6.1.1 09/10/2026
+## 6.1.1 09/10/2026
 - The seven-day chart's dividing rule is drawn where the boundary actually
   is: BETWEEN the last reading and the first forecast hour, clear of both by
   the same amount.  Drawn on the first forecast point it touched one curve
@@ -113,15 +112,17 @@ nws change history
   binding is SQLite, which is what the installer writes and what every
   working station has, sees no change at all.
 
-6.1 09/10/2026
+## 6.1 09/10/2026
 - ACTION REQUIRED for any skin of your own that prints these tags.  DELETE
   THE "$unit.label..." YOU APPEND AFTER .format().  Until 6.1 the tags carried
   no formatter, so .format('%.0f') returned a bare "71" and every example in
   the documentation told you to append the label yourself.  It now returns
   "71degF", and the old idiom prints "71degF degF".  For a range, suppress the
   FIRST label instead of the second:
-      $hour.windSpeed.format('%.0f', add_label=False) to
-          $hour.windSpeed2.format('%.0f')
+  ```
+  $hour.windSpeed.format('%.0f', add_label=False) to
+      $hour.windSpeed2.format('%.0f')
+  ```
   The sample skin never used that idiom, so an unmodified NWSReport needs
   nothing.  The documentation -- Tags, Fields and Recipes -- is updated.
 - ACTION REQUIRED for a metric skin that worked around the units bug below.
@@ -234,7 +235,7 @@ nws change history
   copy anything you customized before upgrading.  No configuration changes,
   and no change to any $nwsforecast tag.
 
-6.0 09/01/2026
+## 6.0 09/01/2026
 - The sample report is rebuilt.  Its three pages -- seven day, hourly and
   alerts -- are responsive, so one page serves a phone and a desktop, and they
   follow the reader's own light or dark setting.  The seven-day page leads with
@@ -288,7 +289,7 @@ nws change history
   become sections too -- 34 alerts, 102 labels.  A bare label must carry
   content after its ellipsis: without that guard a headline wrapping onto a
   line reading "NEVADA..." becomes a heading in the middle of a sentence.
-  The tropical statements' **banner** lines are unwrapped.  They can wrap, so
+  The tropical statements' `**banner**` lines are unwrapped.  They can wrap, so
   the closing pair lands on the next line and only meets the opening one after
   reflow, which is why it is stripped from the finished paragraph.
   Swept over the whole national feed: 391 alerts, 697 labeled sections, 904
@@ -332,7 +333,7 @@ nws change history
   crosses an alert's end -- which is why the page script recomputes rather
   than trusting what generation baked.
 - weewx-nws now draws its own weather icons.  $nwsforecast.icon() turns a
-  forecast period's icon URL into an <svg> naming one of 68 drawn symbols (34
+  forecast period's icon URL into an `<svg>` naming one of 68 drawn symbols (34
   NWS conditions, day and night), $nwsforecast.icon_sprite emits the symbol
   definitions those refer to, and $nwsforecast.icon_name() hands back the
   (condition, is_night, known) parsed out of the URL for a skin that would
@@ -341,7 +342,7 @@ nws change history
   photographs produce, which read as rendering glitches at the size a forecast
   table uses.
   Three sets of names are a contract and will not change without a major
-  version: the symbol ids (wx-<condition>-<day|night>), the css classes on the
+  version: the symbol ids (`wx-<condition>-<day|night>`), the css classes on the
   emitted markup (wxi, wxi-fallback, wxi-unknown) and the --wx-* custom
   properties that color the drawings.  See the Tags and Recipes pages.
 - The sample report draws its icons instead of hot-linking api.weather.gov.
@@ -393,7 +394,9 @@ nws change history
   Note for upgrades: weectl only adds and overwrites, so the 204 files a 5.1 or
   earlier install put in skins/nws/nws_icons/ and in the report's HTML_ROOT are
   left behind.  Nothing reads them.  They can be deleted at leisure:
-    rm -r /home/weewx/skins/nws/nws_icons /home/weewx/public_html/nws/nws_icons
+  ```
+  rm -r /home/weewx/skins/nws/nws_icons /home/weewx/public_html/nws/nws_icons
+  ```
 - weewx-nws now has a user manual, at
   https://chaunceygardiner.github.io/weewx-nws/ -- installation, configuration,
   every $nwsforecast tag and field, the sample report, gridpoints, the
@@ -421,14 +424,14 @@ nws change history
   rewrites weewx.conf, so existing stations are untouched.  No default has
   changed.
 
-5.1 07/12/2026
+## 5.1 07/12/2026
 - Fix shutdown: weewx could fail to stop when the SIGTERM that stops weewxd
   landed while the main thread was inside weewx-nws's startup or
   end-of-archive-period database code — the broad exception handlers there
   logged the shutdown exception and continued.  Those handlers now pass the
   shutdown through.
 
-5.0 07/12/2026
+## 5.0 07/12/2026
 - weewx-nws now requires WeeWX 5 and Python 3.9 (WeeWX 4 support removed).
 - Fix windDir for ENE forecasts: it was reported as 77.5 degrees; ENE is 67.5 degrees.
 - Fix the hourly page of the sample report: a ranged wind speed (e.g. "2 to 9 mph")
@@ -440,116 +443,125 @@ nws change history
   check).  A forecast without one was already rejected, but at compose time and
   without logging the raw response.
 - Fold the check_grid.py utility into nws.py.  It no longer requires matplotlib.
-  Run with: python bin/user/nws.py --check-grid --latitude <lat> --longitude <long>
+  Run with: `python bin/user/nws.py --check-grid --latitude <lat> --longitude <long>`
   The standalone check_grid.py has been removed.
 - Add a test suite (tests/).  Run from the repo root, with a python in which
-  WeeWX is installed: python -m pytest tests
+  WeeWX is installed: `python -m pytest tests`
   Also added tests/verify_cli.py, a harness that runs every nws.py command-line
   option against live NWS and reports PASS/FAIL per option.
 
-4.5.7 6/01/2025
+## 4.5.7 6/01/2025
 - NWS sent forecast with temperatureTrend = null, Relax sanity check to account for this.
 - Log text response when reporting sanity check errors.
 
-4.5.6 4/30/2025
+## 4.5.6 4/30/2025
 - Return to being more strict when sanity checking forecasts.
 
-4.5.5 01/14/2025
+## 4.5.5 01/14/2025
 - Log some more info for a couple of cases where the json returned from NWS is malformed.
 
-4.5.4 08/02/2024
+## 4.5.4 08/02/2024
 - Don't reject forecasts with missing wind speed, relative humidity or dewpoint in one or more periods.
+    ```
     ******* IMPORTANT, you must delete the existing nws database (nws.sdb) if        *******
     ******* udating versions earlier than 4.5.4.  Delete nws.sdb after installing the  *******
     ******* update and just before restaring weewx.  This is necessary because the   *******
     ******* database schema has changed.                                             *******
+    ```
 
-4.5.3 07/27/2024
+## 4.5.3 07/27/2024
 - Print counts when executing --test-requester (used for testing).
 
-4.5.2 07/24/2024
+## 4.5.2 07/24/2024
 - Another import cleanup.
 - rename --test-parsing-all-alerts to --test-parse-all-alerts
 
-4.5.1 07/24/2024
+## 4.5.1 07/24/2024
 - Add back imoprt weeutil statement.
 
-4.5 07/22/2024
+## 4.5 07/22/2024
 - Comprehensive sanity checking on forecasts/alerts returned from NWS.
 
-4.4 07/17/2024
+## 4.4 07/17/2024
 - Fix issue #8: Missing math import statement in alerts.html.tmpl #8
 
-4.3 07/03/2024
+## 4.3 07/03/2024
 - In addition to ignoring Test alerts, ignore Exercise, System and Draft alerts.
 - More formatting changes on the alerts tab of the nws report.
 
-4.2 07/03/2024
+## 4.2 07/03/2024
 - Formatting changes on alerts tab.
 
-4.1 06/27/2024
+## 4.1 06/27/2024
 - Add nwsHeadline to alerts.
+    ```
     ******* IMPORTANT, you must delete the existing nws database (nws.sdb) if        *******
     ******* udating versions earlier than 4.1.  Delete nws.sdb after installing the  *******
     ******* update and just before restaring weewx.  This is necessary because the   *******
     ******* database schema has changed.                                             *******
+    ```
 
-4.0 06/21/2024
+## 4.0 06/21/2024
 - Add the following fields for one hour forecasts:
   pop (probabiliby of percipitation)
   dewpoint
   outHumidity (relative humidity)
+    ```
     ******* IMPORTANT, you must delete the existing nws database (nws.sdb) if        *******
     ******* udating versions earlier than 4.0.  Delete nws.sdb after installing the  *******
     ******* update and just before restaring weewx.  This is necessary because the   *******
     ******* database schema has changed.                                             *******
+    ```
 
-3.2 06/20/2024
+## 3.2 06/20/2024
 - Emergency fix for NWS screwup.  icon URLs are no longer full URLs.  NWS says they will
   patch.  This fix *should* work both ways as it checks first before prepending server.
 
-3.1 06/12/2024
+## 3.1 06/12/2024
 - Reduce default days of forecasts to keep to 9.  Add documenation that keeping a large
   numbr of days will slow down report generation.
 - Note: This won't affect existing installations, but one can change days_to_keep to
   9 in the NWS section of weewx.conf.
 
-3.0 06/04/2024
+## 3.0 06/04/2024
 - Report range of windspeed for 12-hour forecasts.
   if NWS reports a range of windspeed, windSpeed2 will provide the upper range
   (i.e., windSpeed to windSpeed2).  If one wind speed is given, windSpeed2 will
   be None.  For 1-hour forecasts, windSpeed2 is always None.
+    ```
     ******* IMPORTANT, you must delete the existing nws database (nws.sdb) if        *******
     ******* udating versions earlier than 3.0.  Delete nws.sdb after installing the  *******
     ******* update and just before restaring weewx.  This is necessary because the   *******
     ******* database schema has changed.                                             *******
+    ```
 
-2.3 03/01/2023
+## 2.3 03/01/2023
 - Separate 1H, 12H and Alerts into separate threads.  Poll seconds and retry seconds
   for alerts are now configured separately from forecasts (because alerts need to
   be polled more often (600s polls and 30s retries are recommended for alerts).
 - If zero alerts are downloaded (meaning no outstanding alerts), delete
   the existing alerts in the database.
 
-2.2 02/27/2023
+## 2.2 02/27/2023
 - Add more type information (especially return types) and fix up some minor errors.
 
-2.1 12/28/2022
+## 2.1 12/28/2022
 - Bug fix.  When NWS 12H and 1H forecasts are down for hours and hours (as happens),
   ALERTS aren't checked.  v2.1 fixes this oversight.
 
 - Although not strictly necessary, you might want to change the following line in the
   NWS section of weewx.conf from 600 to 300.
-  retry_wait_secs = 300
+  `retry_wait_secs = 300`
 
-2.0.1 12/08/2022
+## 2.0.1 12/08/2022
 - In sample report, separate, by a blank line, the
   What, Where, When, Impacts and Additional Details sections.
 
-2.0 09/04/2022
+## 2.0 09/04/2022
 1.  Better NWS alerts.
 
     Added the following new fields for alerts:
+    ```
     id              : urn:oid:2.49.0.1.840.0.ba84e467a918f2f79303ebc47a234e87d285ab2f.003.1
     expires         : 2022-09-03 15:00:00 PDT (1662242400)
     sent            : 2022-09-03 05:37:00 PDT (1662208620)
@@ -562,138 +574,152 @@ nws change history
     urgency         : Expected
     sender          : w-nws.webmaster@noaa.gov
     senderName      : NWS San Francisco CA
+    ```
 
+    ```
     ******* IMPORTANT, you must delete the existing nws database (nws.sdb) if        *******
     ******* udating versions earlier than 2.0.  Delete nws.sdb after installing the  *******
     ******* update and just before restaring weewx.  This is necessary because the   *******
     ******* database schema has changed.                                             *******
+    ```
 
     If you currently have a version of nws prior to 2.0, and you don't delete the existing nws
     database, nws will not work and the following will be in the log:
+    ```
     ERROR user.nws: You must delete the nws.sdb database and restart weewx.  It contains an old schema!
+    ```
     Note: there will also be other nws errors in the log.
 
-1.13.1 09/02/2022
+## 1.13.1 09/02/2022
 1. Alerts bug fix.
 
-1.13 09/02/2022
+## 1.13 09/02/2022
 1. Don't show alerts past their expiration time (this is in addition to not showing
    superseded alerts--which was fixed in v1.12).
 
-1.12 08/31/2022
+## 1.12 08/31/2022
 1. Properly implement ignoring expired alerts (this is a workaround due to an nws issue.
    The previous workaround was ignoring the new alert and keeping the expired alert!
 
-1.11 06/11/2022
+## 1.11 06/11/2022
 1. Added a standalone utility to test if NWS will return the correct forecast grid and,
    if it doesn't, figure out the correct grid and print the lines to add to the [NWS]
    section of weewx.conf so that the correct grid is used.
    Sample running of check_grid utility:
+   ```
    $ ./check_grid.py --latitude 37.431495 --longitude -122.110937
    nws computed the incorrect grid(92, 88) for lat/long 37.431495/-122.110937
 
     Add the following two lines to the [NWS] section in weewx.conf:
         twelve_hour_forecast_url = "https://api.weather.gov/gridpoints/MTR/91,87/forecast"
         one_hour_forecast_url = "https://api.weather.gov/gridpoints/MTR/91,87/forecast/hourly"
+   ```
 
-1.10 04/25/2022
+## 1.10 04/25/2022
 1. Emit error in log if returned NWS forecast is the wrong grid (due to a long standing NWS bug.
    If you see a message in the log such as:
-   "WARNING user.nws: Lat/Long 37.431495/-122.110937 does not fall within bounds of forecast's polygon (due to NWS Bug)."
+   ```
+   WARNING user.nws: Lat/Long 37.431495/-122.110937 does not fall within bounds of forecast's polygon (due to NWS Bug).
+   ```
    your grid is off by (1,1).  In this example, you'll see in the log that the grid being called is 92,88.
-       INFO user.nws: Downloading ForecastType.TWELVE_HOUR forecasts from https://api.weather.gov/gridpoints/MTR/91,87/forecast.
-       INFO user.nws: Downloading ForecastType.ONE_HOUR forecasts from https://api.weather.gov/gridpoints/MTR/92,88/forecast/hourly.
+   ```
+   INFO user.nws: Downloading ForecastType.TWELVE_HOUR forecasts from https://api.weather.gov/gridpoints/MTR/91,87/forecast.
+   INFO user.nws: Downloading ForecastType.ONE_HOUR forecasts from https://api.weather.gov/gridpoints/MTR/92,88/forecast/hourly.
+   ```
    It should be 91,87.  As such, add the following lines to the NWS section of weewx.conf:
-       twelve_hour_forecast_url = "https://api.weather.gov/gridpoints/MTR/91,87/forecast"
-       one_hour_forecast_url = "https://api.weather.gov/gridpoints/MTR/91,87/forecast/hourly"
+   ```
+   twelve_hour_forecast_url = "https://api.weather.gov/gridpoints/MTR/91,87/forecast"
+   one_hour_forecast_url = "https://api.weather.gov/gridpoints/MTR/91,87/forecast/hourly"
+   ```
 
-1.9 02/11/2022
+## 1.9 02/11/2022
 1. Fix errors if RsyncSpec section not specified in weewx.conf
 
-1.8 02/01/2022
+## 1.8 02/01/2022
 1. Hang on to Last-Modified header in response so it can be passed
    as If-Modified-Since header in request.  In this way, the server
    will return 304 (Not Mofified) if there isn't a new forecast.
 
-1.7 01/28/2022
+## 1.7 01/28/2022
 1. Revamped support for sharing forecasts between instances.
 
    a. Master weewx instances (i.e., instances of weewx that will
       query NWS for forecasts and distribute them), should add
       the following to the NWS section in weewx.conf:
 
-   [NWS]
-       .
-       .
-       .
-       [[RsyncSpec]]
-           enable = true
-           remote_clients = <weewx-machine-1>, <weewx-machine-2>
-           remote_user = root
-           remote_dir = /root/forecasts
-           compress = false
-           log_success = false
-           ssh_options = -o ConnectTimeout=1
-           timeout = 1
+      ```
+      [NWS]
+          .
+          .
+          .
+          [[RsyncSpec]]
+              enable = true
+              remote_clients = <weewx-machine-1>, <weewx-machine-2>
+              remote_user = root
+              remote_dir = /root/forecasts
+              compress = false
+              log_success = false
+              ssh_options = -o ConnectTimeout=1
+              timeout = 1
+      ```
 
    b. client weewx instances that will read forecast files distributed
       by the master (auto-magically via ssh), need to add the following
       to the NWS section of weewx.conf:
 
-   [NWS]
-       .
-       .
-       .
-       read_from_dir = /root/forecasts
+      ```
+      [NWS]
+          .
+          .
+          .
+          read_from_dir = /root/forecasts
+      ```
 
     c. passwordless ssh also needs to be setup between the master and the
        clients from the user on the master to the user specified by
        remote_user.  If you don't understand this, this feature is not for
        you.
 
-1.6 01/23/2022
+## 1.6 01/23/2022
 1. Support sharing forecasts between instances.  To accomplish this,
    a. for the "master" machine (i.e., the instance that will make
       forecasts available to share), add the following to the NWS
       section:
-        forecasts_dir = <directory-to-write-TWELVE_HOUR-and-ONE_HOUR-forecasts>
+      ```
+      forecasts_dir = <directory-to-write-TWELVE_HOUR-and-ONE_HOUR-forecasts>
+      ```
    b. distribute the TWELVE_HOUR and ONE_HOUR files on your own (with rsync or scp commands in crontab)
    c. on the machines where the TWELVE_HOUR and ONE_HOUR files are distributed, add
       the following to the NWS section:
-        read_twelve_hour_forecast_from_file = /<path>/TWELVE_HOUR
-        read_one_hour_forecast_from_file = /<path>/ONE_HOUR
+      ```
+      read_twelve_hour_forecast_from_file = /<path>/TWELVE_HOUR
+      read_one_hour_forecast_from_file = /<path>/ONE_HOUR
+      ```
    With the above setup, only one instance (the master) will actually call nws.
    Note: It is not anticipated that this feature will be popular, as such, it is not described in the README.
 
-1.5 12/14/2021
---------------
+## 1.5 12/14/2021
 1. Guard against downloading forecasts with a generated time in the future.
    (Unfortunately, NWS is sometimes returning bogus generated times.)
 
-1.4 11/23/2021
---------------
+## 1.4 11/23/2021
 1. Allow twelve and one hour forecast URLs to be hardcoded
    (necessary since the NWS is returning the wrong grid for the author's lat/long)
    (Note: NWS has ackknowledged this bug and is working on a fix.)
 
-1.3 03/15/2021
---------------
+## 1.3 03/15/2021
 1. Fetch fresh URLs from NWS on every poll (just in case they ever change).
 
-1.2 08/16/2020
---------------
+## 1.2 08/16/2020
 1. Handle multiple simutaneous alerts.
    Regression caused by https://github.com/chaunceygardiner/weewx-nws/commit/1b11f462232066d8daae7cb7b890fd307601c069
 
-1.1 07/22/2020
---------------
+## 1.1 07/22/2020
 1. Handle case where 404/503 responses are not proper json.
 
-1.0 05/30/2020
---------------
+## 1.0 05/30/2020
 Initial release of NWS.
 
-0.1 05/22/2020
---------------
+## 0.1 05/22/2020
 Initial check-in.
 
